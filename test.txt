@@ -1,0 +1,5 @@
+main(){
+int a;
+a = 45;
+printID a;
+}

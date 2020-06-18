@@ -1,0 +1,457 @@
+Terminals unused in grammar
+
+   TOK_EXIT
+
+
+Grammar
+
+    0 $accept: prog $end
+
+    1 prog: TOK_MAIN TOK_OPENCURLY vardefs stmts TOK_CLOSECURLY
+    2     | %empty
+
+    3 vardefs: %empty
+    4        | vardef TOK_SEMICOLON vardefs
+
+    5 vardef: TOK_INT TOK_IDENT
+    6       | TOK_INT TOK_IDENT_ERR
+    7       | TOK_FLOAT TOK_IDENT
+    8       | TOK_FLOAT TOK_IDENT_ERR
+
+    9 stmts: %empty
+   10      | stmt TOK_SEMICOLON stmts
+
+   11 stmt: TOK_IDENT TOK_EQ expr
+   12     | TOK_PRINTID TOK_IDENT
+   13     | TOK_PRINTEX expr
+
+   14 expr: expr TOK_ADD expr
+   15     | expr TOK_DIV expr
+   16     | expr TOK_SUB expr
+   17     | expr TOK_MUL expr
+   18     | TOK_IDENT
+   19     | RAW
+
+   20 RAW: TOK_NUM
+   21    | TOK_FNUM
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+TOK_SEMICOLON (258) 4 10
+TOK_ADD (259) 14
+TOK_SUB (260) 16
+TOK_MUL (261) 17
+TOK_DIV (262) 15
+TOK_EQ (263) 11
+TOK_INT (264) 5 6
+TOK_FLOAT (265) 7 8
+TOK_IDENT (266) 5 7 11 12 18
+TOK_PRINTID (267) 12
+TOK_PRINTEX (268) 13
+TOK_EXIT (269)
+TOK_MAIN (270) 1
+TOK_OPENCURLY (271) 1
+TOK_CLOSECURLY (272) 1
+TOK_IDENT_ERR (273) 6 8
+TOK_NUM (274) 20
+TOK_FNUM (275) 21
+
+
+Nonterminals, with rules where they appear
+
+$accept (21)
+    on left: 0
+prog (22)
+    on left: 1 2, on right: 0
+vardefs (23)
+    on left: 3 4, on right: 1 4
+vardef (24)
+    on left: 5 6 7 8, on right: 4
+stmts (25)
+    on left: 9 10, on right: 1 10
+stmt (26)
+    on left: 11 12 13, on right: 10
+expr (27)
+    on left: 14 15 16 17 18 19, on right: 11 13 14 15 16 17
+RAW (28)
+    on left: 20 21, on right: 19
+
+
+State 0
+
+    0 $accept: . prog $end
+
+    TOK_MAIN  shift, and go to state 1
+
+    $default  reduce using rule 2 (prog)
+
+    prog  go to state 2
+
+
+State 1
+
+    1 prog: TOK_MAIN . TOK_OPENCURLY vardefs stmts TOK_CLOSECURLY
+
+    TOK_OPENCURLY  shift, and go to state 3
+
+
+State 2
+
+    0 $accept: prog . $end
+
+    $end  shift, and go to state 4
+
+
+State 3
+
+    1 prog: TOK_MAIN TOK_OPENCURLY . vardefs stmts TOK_CLOSECURLY
+
+    TOK_INT    shift, and go to state 5
+    TOK_FLOAT  shift, and go to state 6
+
+    $default  reduce using rule 3 (vardefs)
+
+    vardefs  go to state 7
+    vardef   go to state 8
+
+
+State 4
+
+    0 $accept: prog $end .
+
+    $default  accept
+
+
+State 5
+
+    5 vardef: TOK_INT . TOK_IDENT
+    6       | TOK_INT . TOK_IDENT_ERR
+
+    TOK_IDENT      shift, and go to state 9
+    TOK_IDENT_ERR  shift, and go to state 10
+
+
+State 6
+
+    7 vardef: TOK_FLOAT . TOK_IDENT
+    8       | TOK_FLOAT . TOK_IDENT_ERR
+
+    TOK_IDENT      shift, and go to state 11
+    TOK_IDENT_ERR  shift, and go to state 12
+
+
+State 7
+
+    1 prog: TOK_MAIN TOK_OPENCURLY vardefs . stmts TOK_CLOSECURLY
+
+    TOK_IDENT    shift, and go to state 13
+    TOK_PRINTID  shift, and go to state 14
+    TOK_PRINTEX  shift, and go to state 15
+
+    $default  reduce using rule 9 (stmts)
+
+    stmts  go to state 16
+    stmt   go to state 17
+
+
+State 8
+
+    4 vardefs: vardef . TOK_SEMICOLON vardefs
+
+    TOK_SEMICOLON  shift, and go to state 18
+
+
+State 9
+
+    5 vardef: TOK_INT TOK_IDENT .
+
+    $default  reduce using rule 5 (vardef)
+
+
+State 10
+
+    6 vardef: TOK_INT TOK_IDENT_ERR .
+
+    $default  reduce using rule 6 (vardef)
+
+
+State 11
+
+    7 vardef: TOK_FLOAT TOK_IDENT .
+
+    $default  reduce using rule 7 (vardef)
+
+
+State 12
+
+    8 vardef: TOK_FLOAT TOK_IDENT_ERR .
+
+    $default  reduce using rule 8 (vardef)
+
+
+State 13
+
+   11 stmt: TOK_IDENT . TOK_EQ expr
+
+    TOK_EQ  shift, and go to state 19
+
+
+State 14
+
+   12 stmt: TOK_PRINTID . TOK_IDENT
+
+    TOK_IDENT  shift, and go to state 20
+
+
+State 15
+
+   13 stmt: TOK_PRINTEX . expr
+
+    TOK_IDENT  shift, and go to state 21
+    TOK_NUM    shift, and go to state 22
+    TOK_FNUM   shift, and go to state 23
+
+    expr  go to state 24
+    RAW   go to state 25
+
+
+State 16
+
+    1 prog: TOK_MAIN TOK_OPENCURLY vardefs stmts . TOK_CLOSECURLY
+
+    TOK_CLOSECURLY  shift, and go to state 26
+
+
+State 17
+
+   10 stmts: stmt . TOK_SEMICOLON stmts
+
+    TOK_SEMICOLON  shift, and go to state 27
+
+
+State 18
+
+    4 vardefs: vardef TOK_SEMICOLON . vardefs
+
+    TOK_INT    shift, and go to state 5
+    TOK_FLOAT  shift, and go to state 6
+
+    $default  reduce using rule 3 (vardefs)
+
+    vardefs  go to state 28
+    vardef   go to state 8
+
+
+State 19
+
+   11 stmt: TOK_IDENT TOK_EQ . expr
+
+    TOK_IDENT  shift, and go to state 21
+    TOK_NUM    shift, and go to state 22
+    TOK_FNUM   shift, and go to state 23
+
+    expr  go to state 29
+    RAW   go to state 25
+
+
+State 20
+
+   12 stmt: TOK_PRINTID TOK_IDENT .
+
+    $default  reduce using rule 12 (stmt)
+
+
+State 21
+
+   18 expr: TOK_IDENT .
+
+    $default  reduce using rule 18 (expr)
+
+
+State 22
+
+   20 RAW: TOK_NUM .
+
+    $default  reduce using rule 20 (RAW)
+
+
+State 23
+
+   21 RAW: TOK_FNUM .
+
+    $default  reduce using rule 21 (RAW)
+
+
+State 24
+
+   13 stmt: TOK_PRINTEX expr .
+   14 expr: expr . TOK_ADD expr
+   15     | expr . TOK_DIV expr
+   16     | expr . TOK_SUB expr
+   17     | expr . TOK_MUL expr
+
+    TOK_ADD  shift, and go to state 30
+    TOK_SUB  shift, and go to state 31
+    TOK_MUL  shift, and go to state 32
+    TOK_DIV  shift, and go to state 33
+
+    $default  reduce using rule 13 (stmt)
+
+
+State 25
+
+   19 expr: RAW .
+
+    $default  reduce using rule 19 (expr)
+
+
+State 26
+
+    1 prog: TOK_MAIN TOK_OPENCURLY vardefs stmts TOK_CLOSECURLY .
+
+    $default  reduce using rule 1 (prog)
+
+
+State 27
+
+   10 stmts: stmt TOK_SEMICOLON . stmts
+
+    TOK_IDENT    shift, and go to state 13
+    TOK_PRINTID  shift, and go to state 14
+    TOK_PRINTEX  shift, and go to state 15
+
+    $default  reduce using rule 9 (stmts)
+
+    stmts  go to state 34
+    stmt   go to state 17
+
+
+State 28
+
+    4 vardefs: vardef TOK_SEMICOLON vardefs .
+
+    $default  reduce using rule 4 (vardefs)
+
+
+State 29
+
+   11 stmt: TOK_IDENT TOK_EQ expr .
+   14 expr: expr . TOK_ADD expr
+   15     | expr . TOK_DIV expr
+   16     | expr . TOK_SUB expr
+   17     | expr . TOK_MUL expr
+
+    TOK_ADD  shift, and go to state 30
+    TOK_SUB  shift, and go to state 31
+    TOK_MUL  shift, and go to state 32
+    TOK_DIV  shift, and go to state 33
+
+    $default  reduce using rule 11 (stmt)
+
+
+State 30
+
+   14 expr: expr TOK_ADD . expr
+
+    TOK_IDENT  shift, and go to state 21
+    TOK_NUM    shift, and go to state 22
+    TOK_FNUM   shift, and go to state 23
+
+    expr  go to state 35
+    RAW   go to state 25
+
+
+State 31
+
+   16 expr: expr TOK_SUB . expr
+
+    TOK_IDENT  shift, and go to state 21
+    TOK_NUM    shift, and go to state 22
+    TOK_FNUM   shift, and go to state 23
+
+    expr  go to state 36
+    RAW   go to state 25
+
+
+State 32
+
+   17 expr: expr TOK_MUL . expr
+
+    TOK_IDENT  shift, and go to state 21
+    TOK_NUM    shift, and go to state 22
+    TOK_FNUM   shift, and go to state 23
+
+    expr  go to state 37
+    RAW   go to state 25
+
+
+State 33
+
+   15 expr: expr TOK_DIV . expr
+
+    TOK_IDENT  shift, and go to state 21
+    TOK_NUM    shift, and go to state 22
+    TOK_FNUM   shift, and go to state 23
+
+    expr  go to state 38
+    RAW   go to state 25
+
+
+State 34
+
+   10 stmts: stmt TOK_SEMICOLON stmts .
+
+    $default  reduce using rule 10 (stmts)
+
+
+State 35
+
+   14 expr: expr . TOK_ADD expr
+   14     | expr TOK_ADD expr .
+   15     | expr . TOK_DIV expr
+   16     | expr . TOK_SUB expr
+   17     | expr . TOK_MUL expr
+
+    TOK_MUL  shift, and go to state 32
+    TOK_DIV  shift, and go to state 33
+
+    $default  reduce using rule 14 (expr)
+
+
+State 36
+
+   14 expr: expr . TOK_ADD expr
+   15     | expr . TOK_DIV expr
+   16     | expr . TOK_SUB expr
+   16     | expr TOK_SUB expr .
+   17     | expr . TOK_MUL expr
+
+    TOK_MUL  shift, and go to state 32
+    TOK_DIV  shift, and go to state 33
+
+    $default  reduce using rule 16 (expr)
+
+
+State 37
+
+   14 expr: expr . TOK_ADD expr
+   15     | expr . TOK_DIV expr
+   16     | expr . TOK_SUB expr
+   17     | expr . TOK_MUL expr
+   17     | expr TOK_MUL expr .
+
+    $default  reduce using rule 17 (expr)
+
+
+State 38
+
+   14 expr: expr . TOK_ADD expr
+   15     | expr . TOK_DIV expr
+   15     | expr TOK_DIV expr .
+   16     | expr . TOK_SUB expr
+   17     | expr . TOK_MUL expr
+
+    $default  reduce using rule 15 (expr)
